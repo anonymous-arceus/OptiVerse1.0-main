@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="boxicons/css/boxicons.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" href="optiverse2.png">
+    <title>Homepage ∙ Optiverse</title>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-logo">
+            <p>OptiVerse</p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul>
+                <li><a href="/" class="link active" id="home">Home</a></li>
+                <li><a href="#" class="link">Topics</a></li>
+                <li><a href="/your-posts" class="link">Your Posts</a></li>
+                <li><a href="#" class="link">Messages</a></li>
+                <li><a href="#" class="link">Notifications</a></li>
+                <li>
+                    <form class="srch" action="/search" method="GET">
+                        <input type="text" placeholder="Search..." name="query">
+                        <button type="submit">
+                            <i class='bx bx-search-alt-2 bx-sm' style='color:#ffffff'></i>
+                        </button>
+                    </form>
+
+                </li>
+            </ul>
+        </div>
+        <div class="nav-button">
+            <a href="/logout"><button class="btn white-btn" id="loginBtn">Log Out</button></a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <!-- Tags -->
+        <form class="feed-container" id="create-post" action="/post-thought" method="post">
+            <div class="feed-box">
+                <textarea name="thought" placeholder="How are you feeling today?" rows="3" cols="50" id="txtArea" required></textarea>
+                <div class="feed-interactions">
+                    <div class="dropdown">
+                        <button onclick="myFunction()" class="dropbtn post-btn">Tags</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="#">Positive Affirmations</a>
+                            <a href="#">Mindfulness and Meditation</a>
+                            <a href="#">Inspiring Success Stories</a>
+                            <a href="#">Self-Improvement and Growth</a>
+                            <a href="#">Gratitude and Positivity Journaling</a>
+                            <a href="#">Healthy Living and Well-being</a>
+                            <a href="#">Random Acts of Kindness</a>
+                            <a href="#">Connecting with Nature</a>
+                            <a href="#">Quotes and Wisdom</a>
+                            <a href="#">Music and Melodies for the Soul</a>
+                            <a href="#">Hobbies and Leisure</a>
+                            <a href="#">Book Recommendations and Reviews</a>
+                        </div>
+                    </div>
+                    <button type="submit" class='post-btn'>Post</button>
+                </div>
+            </div>
+        </form>  
+    
+        <!-- <form class="feed-container" id="create-post" action="/post-thought" method="post">
+            <div class="feed-box">
+                <textarea name="thought" placeholder="How are you feeling today?" rows="3" cols="50" id="txtArea" required></textarea>
+                <div class="feed-interactions">
+                    <button type="submit" class='post-btn'>Post</button>
+                </div>
+            </div>
+        </form> -->
+
+        <div class="feed"><!-- This is only for the date to get extracted -->
+            <% function formatDate(date) { %>
+                <% var hours = date.getHours(); %>
+                <% var minutes = date.getMinutes(); %>
+                <% var day = date.getDate(); %>
+                <% var month = date.getMonth() + 1; // JavaScript months are 0-based %>
+                <% var year = date.getFullYear(); %>
+            
+                <% // pad with a zero if necessary %>
+                <% hours = hours < 10 ? '0' + hours : hours; %>
+                <% minutes = minutes < 10 ? '0' + minutes : minutes; %>
+                <% day = day < 10 ? '0' + day : day; %>
+                <% month = month < 10 ? '0' + month : month; %>
+            
+                <% return hours + ':' + minutes + ', ' + day + '/' + month + '/' + year; %>
+            <% } %>
+            <% posts.forEach(function(post) { %>
+                <div class="feed-container">
+                    <div class="feed-box">
+                        <p class="user-info">
+                            <%= formatDate(new Date(post.date)) %>
+                        </p>
+                        <p class="post-info">
+                            <%= post.post %>
+                        </p>
+                        <div class="feed-interactions">
+                            <a class="feed-btn"><i class="fa-regular fa-heart fa-2x"></i></a>
+                            <a class="feed-btn"><i class="fa-solid fa-share fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/0f84f242f1.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+    
+    <script>//tags
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        /* POPPINS FONT */
+        /* general */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            /* border: 1px solid; */
+        }
+
+        body {
+            /* background-image: linear-gradient(180deg, rgb(5, 26, 53, 1), rgb(5, 26, 53, 0.8)); */
+            background-color: rgb(5, 26, 53);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* nav bar section */
+        .nav {
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 100px;
+            line-height: 100px;
+            border-bottom: 0.1px solid white;
+            background-color: rgb(5, 26, 53);
+            z-index: 3;
+        }
+
+        .nav-logo p {
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .nav-menu ul {
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            list-style-type: none;
+        }
+
+        .nav-menu ul li .link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #fff;
+            padding-bottom: 15px;
+            margin: 0 25px;
+        }
+
+        .link:hover,
+        .active {
+            border-bottom: 2px solid #fff;
+        }
+
+        .nav-button .btn {
+            width: 130px;
+            height: 40px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.4);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #registerBtn {
+            margin-left: 15px;
+        }
+
+        .btn.white-btn {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn.btn.white-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-menu-btn {
+            display: none;
+        }
+
+        /* SEARCH BAR */
+        .srch {
+            width: 300px;
+            /* max-width: 400px; */
+            margin: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            border-radius: 60px;
+            padding: 4px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px) saturate(180%);
+        }
+
+        .srch input {
+            background: transparent;
+            flex: auto;
+            border: 0;
+            outline: none;
+            padding: 4px;
+            font-size: 16px;
+            color: rgba(209, 204, 204, 0.81);
+        }
+
+        .srch ::placeholder {
+            color: rgba(209, 204, 204, 0.81);
+        }
+
+        .srch button {
+            border: 0;
+            border-radius: 50%;
+            width: 60px;
+            height: auto;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* FEED AND create-post section */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 110vh;
+            background: rgba(39, 39, 39, 0.4);
+            z-index: 2;
+        }
+
+
+        #create-post {
+            margin-top: 200px;
+            padding: 25px;
+            background-color: #fbf3e4;
+        }
+
+        .feed-container .feed-box textarea {
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 0px;
+            max-height: 500px;
+            padding: 10px;
+            outline: none;
+            border: none;
+            resize: none;
+            cursor: auto;
+            font-size: 1.5em;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .feed-container .feed-box textarea::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .feed-interactions .post-btn {
+            border: 2px solid black;
+            border-radius: 5px;
+            margin: 5px 30px;
+            padding: 5px 10px;
+            font-weight: 300;
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            text-decoration: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .feed-interactions .post-btn :hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+
+        /* feed general */
+        .feed-container {
+            margin: 20px;
+            width: 750px;
+            padding: 20px;
+            border-radius: 20px;
+            background-color: #fbf3e4;
+        }
+
+        .feed-container .feed-box p {
+            padding: 15px;
+        }
+
+        .feed-interactions {
+            display: flex;
+            justify-content: right;
+            padding: 20px 0;
+        }
+
+        .feed-btn {
+            padding: 0 20px;
+        }
+
+        /* media section */
+        @media only screen and (max-width: 786px) {
+            .nav-button {
+                display: none;
+            }
+
+            .nav-menu.responsive {
+                top: 100px;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: -800px;
+                display: flex;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.2);
+                width: 100%;
+                height: 90vh;
+                backdrop-filter: blur(20px);
+                transition: .3s;
+            }
+
+            .nav-menu ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-menu-btn {
+                display: block;
+            }
+
+            .nav-menu-btn i {
+                font-size: 25px;
+                color: #fff;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                cursor: pointer;
+                transition: .3s;
+            }
+
+            .nav-menu-btn i:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        @media only screen and (max-width: 540px) {
+            .wrapper {
+                min-height: 100vh;
+            }
+
+            .form-box {
+                width: 100%;
+                height: 500px;
+            }
+
+            .register-container,
+            .login-container {
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .register-container .two-forms {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* tags */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            min-width: 160px;
+            z-index: 1;
+            background-color: #f9f9f9; /* Change this to your desired background color */
+            overflow: auto;
+            max-height: 200px; /* Change this to your desired maximum height */
+        }
+
+        .dropdown-content a {
+            color: black; /* Change this to your desired text color */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
+</body>
+
+</html>
