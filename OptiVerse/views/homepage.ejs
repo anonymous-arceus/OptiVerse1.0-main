@@ -468,9 +468,9 @@
 
         .like-button {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
         align-items: center;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         }
 
         .like-button .likes-amount {
@@ -479,7 +479,17 @@
         color: #888;
         font-weight: 900;
         /* margin-bottom: 6px; */
+        margin-right: 2rem;
+        
         }
+        .likes-amount {
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+
+
         /* media section */
         @media only screen and (max-width: 786px) {
             .nav-button {
@@ -559,7 +569,7 @@
             position: absolute;
             min-width: 160px;
             z-index: 1;
-            background-color: #f9f9f9; /* Change this to your desired background color */
+            background-color: rgb(5, 26, 53); /* Change this to your desired background color */
             overflow: auto;
             max-height: 200px; /* Change this to your desired maximum height */
         }
