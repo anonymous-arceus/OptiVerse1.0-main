@@ -468,7 +468,9 @@
 
         .like-button {
         display: flex;
-        align-items: bottom;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         }
 
         .like-button .likes-amount {
@@ -476,7 +478,7 @@
         font-family: "Roboto", sans-serif;
         color: #888;
         font-weight: 900;
-        margin-bottom: 6px;
+        /* margin-bottom: 6px; */
         }
         /* media section */
         @media only screen and (max-width: 786px) {
@@ -607,22 +609,25 @@
             textarea.value += ' #' + tag;
             tagsButton.textContent = tag;
         }
-        const heartIcon = document.querySelector(".like-button .heart-icon");
-        const likesAmountLabel = document.querySelector(".like-button .likes-amount");
+        const likeButtons = document.querySelectorAll(".like-button");
 
-        let likesAmount = 69;
+        likeButtons.forEach((likeButton) => {
+        const heartIcon = likeButton.querySelector(".heart-icon");
+        const likesAmountLabel = likeButton.querySelector(".likes-amount");
+
+        let likesAmount = Number(likesAmountLabel.innerHTML);
 
         heartIcon.addEventListener("click", () => {
         heartIcon.classList.toggle("liked");
         if (heartIcon.classList.contains("liked")) {
             likesAmount++;
-            } 
-            else {
-                likesAmount--;
-                }
+        } else {
+            likesAmount--;
+        }
 
         likesAmountLabel.innerHTML = likesAmount;
-        });
+    });
+});
     </script>
 
     
