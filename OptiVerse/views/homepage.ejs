@@ -33,7 +33,7 @@
                     <li><a href="#"></a>MusicAndMelodiesForTheSoul</li>
                     <li><a href="#"></a>HobbiesAndLeisure</li>
                     <li><a href="#"></a>BookRecommendationsAndReviews</li>
-                    <li><a href="#"></a>BookRecommendationsAndReviews</li>aerg
+                    
                 </ul>
                 </li>
                 <li><a href="/your-posts" class="link">Your Posts</a></li>
@@ -109,8 +109,11 @@
                         <p class="post-info">
                             <%= post.post %>
                         </p>
-                        <div class="feed-interactions">
-                            <button class="like-btn"><i class="fa-regular fa-heart fa-2x"></i></button>
+                        <div class="like-button">
+                            <div class="heart-bg">
+                              <div class="heart-icon"></div>
+                            </div>
+                            <div class="likes-amount">69</div>
                             <button ><i class="fa-solid fa-share fa-2x"></i></button>
                         </div>
                     </div>
@@ -199,7 +202,7 @@
         .nav-menu ul li .dropdown {
         display: none; /* Hide the dropdown menu by default */
         position: absolute; /* Position the dropdown menu absolutely to the parent li */
-        background-color: #fff; /* Background color of the dropdown menu */
+        background-color: rgb(5, 26, 53); /* Background color of the dropdown menu */
         min-width: 160px; /* Minimum width of the dropdown menu */
         cursor: pointer;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Add some shadow for a nice visual effect */
@@ -207,9 +210,11 @@
         max-height: 500px;
         overflow-y: auto; /* Add scroll if content exceeds maximum height */
         }
-
+        .nav-menu ul li .dropdown::-webkit-scrollbar {
+            display: none; 
+        }
         .nav-menu ul li .dropdown li {
-        color: black; /* Color of the dropdown items */
+        color: #fff; /* Color of the dropdown items */
         padding: 8px 10pxs; /* Padding for the dropdown items */
         text-decoration: none; /* Remove the underline from the dropdown items */
         display: block; /* Display the dropdown items as block elements */
@@ -217,11 +222,12 @@
         }
 
         .nav-menu ul li .dropdown li:hover {
-        background-color: rgba(255, 255, 255, 0.3) !important; /* Change the background color of the dropdown items on hover */
+        background-color: rgba(255, 255, 255, 0.435) !important; /* Change the background color of the dropdown items on hover */
         }
 
         .nav-menu ul li:hover .dropdown {
         display: block; /* Display the dropdown menu on hover over the parent li */
+        
         }
 
         /* Uptill here  */
@@ -271,15 +277,15 @@
 
 
         /* ............. */
-        .feed-interactions button {
+        .interactions button {
         margin-right: 10px; /* Adjust as needed */
         }
 
-        .feed-interactions i {
+        .interactions i {
         border: none;
         }
         
-        .feed-interactions button:last-child {
+        .interactions button:last-child {
         margin-right: 0;
         }
         
@@ -366,6 +372,7 @@
 
         .feed-interactions .post-btn {
             border: 2px solid black;
+            justify-content: right;
             border-radius: 5px;
             margin: 5px 30px;
             padding: 5px 10px;
@@ -376,6 +383,7 @@
             font-size: 20px;
             cursor: pointer;
             transition: .3s ease;
+            
         }
 
         .feed-interactions .post-btn :hover {
@@ -396,6 +404,12 @@
             padding: 15px;
         }
 
+        .like-button {
+            display: flex;
+            justify-content: right;
+            padding: 20px 0;
+        }
+
         .feed-interactions {
             display: flex;
             justify-content: right;
@@ -406,7 +420,7 @@
             padding: 0 20px;
         }
         
-        .feed-interactions button {
+        .like-button button ,.heart-bg {
             /* background: #ffffff;
             margin-right: 20px; 
             border: none;  */
@@ -416,6 +430,53 @@
             text-decoration: none;
             display: block;
             border-radius: 6px;
+        }
+        
+        .like-button .heart-icon {
+            height: 100px;
+            width: 100px;
+            background: url("/heart.png");
+            background-position: left;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .like-button .heart-icon.liked {
+            animation: like-anim 0.7s steps(28) forwards;
+        }
+
+        @keyframes like-anim {
+        to {
+            background-position: right;
+            }
+        }
+
+        .like-button .heart-bg {
+            background: rgba(255, 192, 200, 0);
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 100ms ease;
+        }
+
+        .like-button .heart-bg:hover {
+        background: rgba(255, 192, 200, 0.7);
+        }
+
+        .like-button {
+        display: flex;
+        align-items: bottom;
+        }
+
+        .like-button .likes-amount {
+        font-size: 20px;
+        font-family: "Roboto", sans-serif;
+        color: #888;
+        font-weight: 900;
+        margin-bottom: 6px;
         }
         /* media section */
         @media only screen and (max-width: 786px) {
@@ -500,6 +561,9 @@
             overflow: auto;
             max-height: 200px; /* Change this to your desired maximum height */
         }
+        .dropdown-content::-webkit-scrollbar {
+            display: none; 
+        }
 
         .dropdown-content button {
             background-color: rgb(5, 26, 53); /* Green background */
@@ -524,7 +588,11 @@
         .show {
             display: block;
         }
+
     </style>
+
+
+
     <script src="https://kit.fontawesome.com/0f84f242f1.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="scripts.js"></script>
     
@@ -539,7 +607,22 @@
             textarea.value += ' #' + tag;
             tagsButton.textContent = tag;
         }
+        const heartIcon = document.querySelector(".like-button .heart-icon");
+        const likesAmountLabel = document.querySelector(".like-button .likes-amount");
 
+        let likesAmount = 69;
+
+        heartIcon.addEventListener("click", () => {
+        heartIcon.classList.toggle("liked");
+        if (heartIcon.classList.contains("liked")) {
+            likesAmount++;
+            } 
+            else {
+                likesAmount--;
+                }
+
+        likesAmountLabel.innerHTML = likesAmount;
+        });
     </script>
 
     
