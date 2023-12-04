@@ -143,6 +143,14 @@ app.post('/post-thought', (req, res) => {
         });
     });
 });
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 app.post('/register', (req, res) => {
     let formdata = "";
     req.on("data", (chunk) => {
@@ -152,22 +160,31 @@ app.post('/register', (req, res) => {
     req.on("end", () => {
         const data = qs.parse(formdata);
 
-        const query = "INSERT INTO users (email, password) VALUES (?, ?)";
-        const values = [data.email, data.password]; // Note: This is not secure for production
+        if (!validateEmail(data.email)) {
+            res.status(400).send('Invalid email');
+            return;
+        }
 
-        pool.getConnection((err, connection) => {
+        bcrypt.hash(data.password, saltRounds, function(err, hash) {
             if (err) throw err;
 
-            connection.query(query, values, (err, result) => {
-                connection.release();
+            const query = "INSERT INTO users (email, password) VALUES (?, ?)";
+            const values = [data.email, hash];
 
+            pool.getConnection((err, connection) => {
                 if (err) throw err;
 
-                res.redirect('/');
+                connection.query(query, values, (err, result) => {
+                    connection.release();
+
+                    if (err) throw err;
+
+                    res.redirect('/');
+                });
             });
         });
     });
-});
+})
 
 app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
