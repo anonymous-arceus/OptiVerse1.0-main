@@ -1,23 +1,58 @@
-//first
 const express = require('express');
 const session = require('express-session');
 const mysql = require("mysql");
 const qs = require("querystring");
-const fs = require("fs");
+// const fs = require("fs");
 const path = require('path');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');   
+const router = express.Router();
+const bcrypt = require('bcrypt');
 
-//second
+
+// Create a connection object
+const conn = mysql.createConnection({
+    host: "bqpzivu9nvwoeq3b0fdi-mysql.services.clever-cloud.com",
+    user: "ub62yxrgvdnmaye7",
+    password: "4sM3ywk8Y3IZxkejgC9Y",
+    database: "bqpzivu9nvwoeq3b0fdi",
+    port: 3306,
+});
+
 const pool = mysql.createPool({
     connectionLimit: 10,
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "optiverse",
-    port: 3307,
+    host: "bqpzivu9nvwoeq3b0fdi-mysql.services.clever-cloud.com",
+    user: "ub62yxrgvdnmaye7",
+    password: "4sM3ywk8Y3IZxkejgC9Y",
+    database: "bqpzivu9nvwoeq3b0fdi",
+    port: 3306,
+});
+
+
+conn.connect(function (err) {
+    if (err) {
+        console.error('Error connecting to MySQL: ' + err.stack);
+        return;
+    }
+    console.log('Connected to MySQL as id ' + conn.threadId);
+});
+var rout = express.Router();
+rout.get('/loginpage', function(req, res, next) {
+    conn.getConnection(
+        function (err, client) {
+            client.query('SELECT * FROM users', function(err, rows) {
+                // And done with the connection.
+                if(err){
+                    console.log('Query Error');
+                }
+                res.json(rows);
+                client.release();
+                // Don't use the connection here, it has been returned to the pool.
+            });
+    });     
 });
 //third
 var app = express();
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -143,7 +178,7 @@ app.post('/post-thought', (req, res) => {
         });
     });
 });
-const bcrypt = require('bcrypt');
+
 const saltRounds = 10;
 
 function validateEmail(email) {
